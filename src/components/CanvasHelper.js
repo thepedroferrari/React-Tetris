@@ -4,13 +4,13 @@ export function rect(props) {
 	ctx.fillRect(x, y, width, height);
 }
 
-export function drawMatrix(rect, ctx, matrix, offset) {
+export function drawMatrix(rect, ctx, matrix, offset, color) {
 	matrix.forEach((row, y) => {
 		y = y + offset.y;
 		row.forEach((value, x) => {
 			x = x + offset.x;
 			if (value) {
-				rect({ ctx, x, y, width: 1, height: 1, color: '#f00' });
+				rect({ ctx, x, y, width: 1, height: 1, color: color || '#f00' });
 			}
 		});
 	});
