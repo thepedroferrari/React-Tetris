@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-
-const rect = (props) => {
-	const { ctx, x, y, width, height, color } = props;
-	ctx.fillStyle = color;
-	ctx.fillRect(x, y, width, height);
-};
+import { rect, drawMatrix } from './CanvasHelper';
 
 // prettier-ignore
 const matrix = [
@@ -15,26 +10,19 @@ const matrix = [
 
 export default class Canvas extends Component {
 	componentDidMount() {
+		const canvas = this.refs.canvas;
+		const ctx = canvas.getContext('2d');
+		ctx.scale(20, 20);
+		rect({ ctx, x: 0, y: 0, width: canvas.width, height: canvas.height });
+		drawMatrix(rect, ctx, matrix, { x: 2, y: 5 });
 		this.updateCanvas();
 	}
 	componentDidUpdate() {
 		this.updateCanvas();
 	}
 	updateCanvas() {
-		const canvas = this.refs.canvas;
-		const ctx = canvas.getContext('2d');
-		ctx.scale(20, 20);
-
-		// Draw Canvas Background
-		rect({ ctx, x: 0, y: 0, width: canvas.width, height: canvas.height });
-		matrix.forEach((row, y) => {
-			row.forEach((value, x) => {
-				console.log(value);
-				if (value) {
-					rect({ ctx, x, y, width: 1, height: 1, color: '#f00' });
-				}
-			});
-		});
+		const ctx = this.refs.canvas.getContext('2d');
+		drawMatrix(rect, ctx, matrix, { x: 15, y: 15 });
 	}
 	render() {
 		return <canvas id="tetris" ref="canvas" width={360} height={600} />;
