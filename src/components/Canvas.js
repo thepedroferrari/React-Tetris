@@ -21,10 +21,9 @@ export default class Canvas extends Component {
 	}
 
 	componentDidUpdate() {
-		console.log(this.state.time);
 		const ctx = this.state.ctx;
-		const { pos, matrix, time, lastTime, dropCounter, dropInterval } = this.state;
-		const { x, y } = pos;
+		const pos = this.state.pos;
+		let { x, y } = pos;
 
 		//Forcing specific T
 		const { shape, color } = this.state.matrix.t;
@@ -34,8 +33,20 @@ export default class Canvas extends Component {
 			rect({ ctx, x: 0, y: 0, width: this.state.canvas.width, height: this.state.canvas.height });
 			drawMatrix(rect, ctx, shape, { x, y }, color);
 		};
-		const update = () => {
+		let lastTime = 0;
+		let dropCounter = 0;
+		let dropInterval = 1000;
+
+		const update = (time = 0) => {
+			const deltaTime = time - lastTime;
+			lastTime = time;
+			dropCounter += deltaTime;
+			if (dropCounter > dropInterval) {
+				y = y + 1;
+				dropCounter = 0;
+			}
 			draw();
+			requestAnimationFrame(update);
 		};
 		update();
 	}
