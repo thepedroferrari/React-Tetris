@@ -21,6 +21,10 @@ export default class Canvas extends Component {
 	}
 
 	componentDidUpdate() {
+		this.updateGame();
+	}
+
+	updateGame() {
 		const ctx = this.state.ctx;
 		const pos = this.state.pos;
 		let { x, y } = pos;
@@ -48,10 +52,15 @@ export default class Canvas extends Component {
 			draw();
 			requestAnimationFrame(update);
 		};
+
 		update();
 	}
 
+	handleKeyDown = (e) => {
+		console.log('key: ', e.keyCode);
+	};
+
 	render() {
-		return <canvas id="tetris" ref="canvas" width={360} height={600} />;
+		return <canvas id="tetris" ref="canvas" width={360} height={600} onKeyDown={this.handleKeyDown} tabIndex="0" />;
 	}
 }
